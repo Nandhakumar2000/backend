@@ -9,6 +9,12 @@ const gameDetailsSchema = new Schema({
    shuffledAnswer: {type: String, required: true},
 });
 
+const step = new Schema({
+  stepImage: {type: String,required: true},
+  stepHeading: {type: String, required: true},
+  stepDescription: {type: String, required: true},
+});
+
 const gameSchema = new Schema({
   gameName: { type: String, required: true },
   gameBanner: { type: String, required: true },
@@ -19,7 +25,8 @@ const gameSchema = new Schema({
   endTime: { type: Date, required: true },
   gradientColor1: {type: String, required: true},
   gradientColor2: {type: String, required: true},
-  questions: [gameDetailsSchema]
+  questions: [gameDetailsSchema],
+  steps: [step]
 }, {
   timestamps: true,
 });

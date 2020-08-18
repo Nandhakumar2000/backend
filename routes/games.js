@@ -10,13 +10,6 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
 
-  const newgameDetails = new GameDetails({
-  "question": "Nandha",
-    "answer": "Hello",
-    "image": "User",
-    "shuffledAnswer": "Ok"
- });
-
   const gameName = req.body.gameName;
   const gameBanner = req.body.gameBanner;
   const questionTime = Number(req.body.questionTime);
@@ -27,6 +20,7 @@ router.route('/add').post((req, res) => {
   const gradientColor1 = req.body.gradientColor1;
   const gradientColor2 = req.body.gradientColor2;
   const questions = [];
+  const steps = [];
   for(var i= 0; i< req.body.questions.length; i++){
     questions.push({
       "question": req.body.questions[i].question,
@@ -35,6 +29,14 @@ router.route('/add').post((req, res) => {
       "shuffledAnswer" : req.body.questions[i].shuffledAnswer
     });
   }
+  for(var j= 0; j< req.body.steps.length; j++){
+    steps.push({
+      "stepImage": req.body.steps[j].stepImage,
+      "stepHeading" : req.body.steps[j].stepHeading,
+      "stepDescription" : req.body.steps[j].stepDescription,
+    });
+  }
+
   const newGame = new Game({
     gameName,
     gameBanner,
@@ -45,7 +47,8 @@ router.route('/add').post((req, res) => {
     endTime,
     gradientColor1,
     gradientColor2,
-    questions
+    questions,
+    steps,
   });
 
   newGame.save()
@@ -79,6 +82,7 @@ router.route('/update/:id').post((req, res) => {
         GameDetails.gradientColor1 = req.body.gradientColor1;
         GameDetails.gradientColor2 = req.body.gradientColor2;
         GameDetails.questions = [];
+        GameDetails.steps = [];
         for(var i= 0; i< req.body.questions.length; i++){
             GameDetails.questions.push({
               "question": req.body.questions[i].question,
@@ -87,7 +91,14 @@ router.route('/update/:id').post((req, res) => {
               "shuffledAnswer" : req.body.questions[i].shuffledAnswer
             });
           }
-  GameDetails.save()
+          for(var j= 0; j< req.body.steps.length; j++){
+            GameDetails.steps.push({
+              "stepImage": req.body.steps[j].stepImage,
+              "stepHeading" : req.body.steps[j].stepHeading,
+              "stepDescription" : req.body.steps[j].stepDescription,
+            });
+          }
+         GameDetails.save()
         .then(() => res.json(req.body.gameName))
         .catch(err => res.status(400).json('Error: ' + err));
     })
